@@ -93,11 +93,10 @@ class TaskListViewController: UITableViewController {
     @IBAction func sortingList(_ sender: UISegmentedControl) {
         if sender.selectedSegmentIndex == 1 {
             taskLists = taskLists.sorted(byKeyPath: "name")
-            tableView.reloadData()
         } else {
             taskLists = taskLists.sorted(byKeyPath: "date")
-            tableView.reloadData()
         }
+        tableView.reloadData()
     }
     
     // MARK: - Private Methods
