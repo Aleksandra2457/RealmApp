@@ -2,7 +2,8 @@
 //  TasksViewViewController.swift
 //  RealmApp
 //
-//  Created by Александра Лесовская on 25.04.2022.
+//  Created by Alexey Efimov on 02.07.2018.
+//  Copyright © 2018 Alexey Efimov. All rights reserved.
 //
 
 import UIKit
@@ -75,15 +76,17 @@ class TasksViewController: UITableViewController {
         
         let doneAction = UIContextualAction(style: .normal, title: title) { _, _, isDone in
             StorageManager.shared.doneTask(task)
+            let indexPathForCurrentTask = IndexPath(
+                row: self.currentTasks.index(of: task) ?? 0,
+                section: 0
+            )
+            let indexPathForCompletedTask = IndexPath(
+                row: self.completedTasks.index(of: task) ?? 0,
+                section: 1
+            )
+            let destinationIndexRow = indexPath.section == 0 ? indexPathForCompletedTask : indexPathForCurrentTask
+            tableView.moveRow(at: indexPath, to: destinationIndexRow)
             
-            let numberOfCurrentTasks = self.currentTasks.count == 0 ? 0 : self.currentTasks.count - 1
-            let numberOfCompletedTasks = self.completedTasks.count == 0 ? 0 : self.completedTasks.count - 1
-            
-            if title == "Done" {
-                tableView.moveRow(at: indexPath, to: IndexPath(row: numberOfCompletedTasks, section: 1))
-            } else {
-                tableView.moveRow(at: indexPath, to: IndexPath(row: numberOfCurrentTasks, section: 0))
-            }
             isDone(true)
         }
         
